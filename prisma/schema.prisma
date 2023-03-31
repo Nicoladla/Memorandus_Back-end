@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model contacts {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  peopleId    Int
+  people      people @relation(fields: [peopleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model memoirs {
+  id          Int      @id @default(autoincrement())
+  description String
+  peopleId    Int
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  people      people   @relation(fields: [peopleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model people {
+  id                   Int                @id @default(autoincrement())
+  name                 String
+  image                String?
+  birthday             DateTime?          @db.Date
+  description          String?
+  userId               Int
+  relationshipGroupsId Int
+  relationshipLevelsId Int
+  createdAt            DateTime           @default(now()) @db.Timestamp(6)
+  updateAt             DateTime           @default(now()) @db.Timestamp(6)
+  contacts             contacts[]
+  memoirs              memoirs[]
+  relationshipGroups   relationshipGroups @relation(fields: [relationshipGroupsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  relationshipLevels   relationshipLevels @relation(fields: [relationshipLevelsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                users              @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model relationshipGroups {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  userId             Int
+  createdAt          DateTime             @default(now()) @db.Timestamp(6)
+  people             people[]
+  users              users                @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  relationshipLevels relationshipLevels[]
+}
+
+model relationshipLevels {
+  id                   Int                @id @default(autoincrement())
+  name                 String
+  relationshipGroupsId Int
+  people               people[]
+  relationshipGroups   relationshipGroups @relation(fields: [relationshipGroupsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id                 Int                  @id @default(autoincrement())
+  image              String?
+  name               String
+  email              String               @unique
+  password           String
+  createdAt          DateTime             @default(now()) @db.Timestamp(6)
+  people             people[]
+  relationshipGroups relationshipGroups[]
+}
