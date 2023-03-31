@@ -1,6 +1,7 @@
 import express from "express";
+import "express-async-errors";
 import cors from "cors";
-import indexRouters from "./routers";
+import indexRouters from "./routers/indexRouters";
 import connectApp from "./server";
 
 export const app = express();
