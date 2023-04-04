@@ -3,8 +3,8 @@ export type User= {
     image?: string,
     name: string,
     email: string,
-    password: string,
+    password: string, 
     createdAt: Date
 }
 
-export type SignUp= Omit<User, "id" | "createdAt">
+export type SignUp= Omit<User, "id" | "createdAt"> & {confirmPassword: string}
