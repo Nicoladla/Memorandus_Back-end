@@ -7,11 +7,12 @@ export async function signUp(req: Request, res: Response) {
   delete user.confirmPassword;
 
   try {
-    authServices.postUser(user);
+    await authServices.postUser(user);
 
     res.sendStatus(201);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
+    res.status(409).send(err.message);
   }
 }
 
