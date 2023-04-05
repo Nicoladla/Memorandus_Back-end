@@ -7,4 +7,6 @@ export type User= {
     createdAt: Date
 }
 
-export type SignUp= Omit<User, "id" | "createdAt"> & {confirmPassword: string}
+export type SignUp= Omit<User, "id" | "createdAt"> & {confirmPassword?: string}
+
+export type InsertUser= Omit<User, "id" | "createdAt">
