@@ -11,5 +11,9 @@ export function handleErrorsMiddleware(
     return res.status(409).send({ message: err.message });
   }
 
+  if (err.name === "badRequestError") {
+    return res.status(400).send({ message: err.message });
+  }
+
   res.status(500).send({ message: err.message });
 }
