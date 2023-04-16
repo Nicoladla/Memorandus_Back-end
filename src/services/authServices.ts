@@ -6,7 +6,7 @@ import { authRepositories } from "@/repositories";
 
 async function postUser(user: InsertUser) {
   const emailExist: User = await authRepositories.getEmail(user.email);
-  if (emailExist) throw conflictError("Existing email");
+  if (emailExist) throw conflictError("This email is already registered");
 
   const hashPassword = bcrypt.hashSync(user.password, 10);
 

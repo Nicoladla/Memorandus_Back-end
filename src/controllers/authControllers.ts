@@ -11,7 +11,11 @@ export async function signUp(req: Request, res: Response) {
 
     res.sendStatus(201);
   } catch (err) {
-    res.status(409).send({message: err.message});
+    if (err.name === "conflictError") {
+      return res.status(409).send({ message: err.message });
+    }
+
+    res.status(500).send({ message: err.message });
   }
 }
 

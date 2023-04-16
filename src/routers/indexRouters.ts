@@ -6,8 +6,8 @@ import authRouters from "./authRouters";
 const router = Router();
 
 router
-  .get("/health", (req: Request, res: Response) => res.send("Ok"))
-  .use("/auth", authRouters)
-  .use(handleErrorsMiddleware);
+.get("/health", (req: Request, res: Response) => res.send("Ok"))
+.use("/auth", authRouters)
+.use(handleErrorsMiddleware);
 
 export default router;
