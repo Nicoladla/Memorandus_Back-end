@@ -1,19 +1,20 @@
 import {
-  deleteRelationshipGroups,
-  getRelationshipGroups,
-  postRelationshipGroups,
-  putRelationshipGroups,
+  deleteRelationshipGroup,
+  getRelationshipGroup,
+  postRelationshipGroup,
+  putRelationshipGroup,
 } from "@/controllers";
 import { tokenValidation, validateBody } from "@/middlewares";
+import { relationshipGroupSchema } from "@/models";
 import { Router } from "express";
 
 const router = Router();
 
 router
   .all("/*", tokenValidation)
-  .get("/", getRelationshipGroups)
-  .post("/", validateBody(), postRelationshipGroups)
-  .put("/", validateBody(), putRelationshipGroups)
-  .delete("/", deleteRelationshipGroups);
+  .get("/", getRelationshipGroup)
+  .post("/", validateBody(relationshipGroupSchema), postRelationshipGroup)
+  .put("/:id", validateBody(relationshipGroupSchema), putRelationshipGroup)
+  .delete("/:id", deleteRelationshipGroup);
 
 export default router;
