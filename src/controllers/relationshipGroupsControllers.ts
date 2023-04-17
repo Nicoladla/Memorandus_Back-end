@@ -42,5 +42,3 @@ export async function deleteRelationshipGroups(
     //res.status(500).send({ message: err.message });
   }
 }
-const { userId } = req;
-const relationshipGroups= req.body
