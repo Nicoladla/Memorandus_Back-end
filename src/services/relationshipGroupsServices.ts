@@ -1,4 +1,4 @@
-import { conflictError } from "@/errors";
+import { conflictError, notFoundError } from "@/errors";
 import { InsertRelationshipGroups, RelationshipGroups } from "@/protocols";
 import { relationshipGroupsRepositories } from "@/repositories";
 
@@ -29,23 +29,33 @@ async function getRelationshipGroup(userId: number) {
 }
 
 async function postRelationshipGroup(
-  relationshipGroups: InsertRelationshipGroups
+  relationshipGroup: InsertRelationshipGroups
 ) {
-  const relationshipGroupsExist =
-    checkExistenceRelationshipGroup(relationshipGroups, "name");
+  const relationshipGroupExist =
+    checkExistenceRelationshipGroup(relationshipGroup, "name");
 
-  if (relationshipGroupsExist)
+  if (relationshipGroupExist)
     throw conflictError("Existing Relationship Group");
 
   await relationshipGroupsRepositories.postRelationshipGroup(
-    relationshipGroups
+    relationshipGroup
   );
 }
 
 async function putRelationshipGroup(
-  relationshipGroups: InsertRelationshipGroups
+  id: number, relationshipGroups: InsertRelationshipGroups,
 ) {
+  const relationshipGroupExist = checkExistenceRelationshipGroup(
+    relationshipGroups,
+    "id"
+  );
 
+  if (!relationshipGroupExist)
+    throw notFoundError("Relationship group not found");
+
+  await relationshipGroupsRepositories.putRelationshipGroup(
+    id, relationshipGroups
+  );
 }
 
 export const relationshipGroupsServices = {

@@ -42,12 +42,20 @@ export async function putRelationshipGroup(
   req: AuthenticatedRequest,
   res: Response
 ) {
-  try {
-    
+  const id:number= Number(req.params);
+  const { userId } = req;
+  const { name } = req.body as { name: string };
 
-    res.sendStatus(200)
+  if(isNaN(id)) return res.status(400).send("Invalid parameter")//conferir
+
+  try {
+    res.sendStatus(200);
   } catch (err) {
-    //res.status(500).send({ message: err.message });
+    if (err.name === "notFoundError") {
+      return res.status(404).send({ message: err.message });
+    }
+
+    res.status(500).send({ message: err.message });
   }
 }
 
